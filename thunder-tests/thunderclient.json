@@ -32,11 +32,11 @@
     "colId": "b81f9898-f2e1-4630-b6fd-f693a354e7bf",
     "containerId": "",
     "name": "busca produto por id",
-    "url": "http://localhost:3000/products/a",
+    "url": "http://localhost:3000/products/2",
     "method": "GET",
     "sortNum": 20000,
     "created": "2023-01-14T13:49:32.462Z",
-    "modified": "2023-01-14T22:40:21.484Z",
+    "modified": "2023-01-14T22:42:09.561Z",
     "headers": [],
     "params": [],
     "tests": []

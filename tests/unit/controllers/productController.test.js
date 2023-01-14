@@ -54,7 +54,7 @@ describe('Testando Product - Controller', function () {
       await productController.getProductById(req, res);
       // Assert
       expect(res.status).to.have.been.calledOnceWith(422);
-      expect(res.json).to.have.been.calledOnceWith('"id" must be a number');
+      expect(res.json).to.have.been.calledOnceWith({ message: '"id" must be a number' });
     });
 
     it('inexistente é chamado o status com o código 404', async function () {
@@ -71,7 +71,7 @@ describe('Testando Product - Controller', function () {
       await productController.getProductById(req, res);
       // Assert
       expect(res.status).to.have.been.calledOnceWith(404);
-      expect(res.json).to.have.been.calledOnceWith('Product not found');
+      expect(res.json).to.have.been.calledOnceWith({ message: 'Product not found' });
     });
 
     it('é chamado o status com o código 200', async function () {
