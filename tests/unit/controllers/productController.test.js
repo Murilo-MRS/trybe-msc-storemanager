@@ -49,7 +49,7 @@ describe('Testando Product - Controller', function () {
       
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
-      sinon.stub(productService, 'getProductById').resolves({ type: null, message: '"id" must be a number' });
+      sinon.stub(productService, 'getProductById').resolves({ type: 'INVALID_VALUE', message: '"id" must be a number' });
       // Act
       await productController.getProductById(req, res);
       // Assert
@@ -66,7 +66,7 @@ describe('Testando Product - Controller', function () {
       
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
-      sinon.stub(productService, 'getProductById').resolves({ type: null, message: 'Product not found' });
+      sinon.stub(productService, 'getProductById').resolves({ type: 'PRODUCT_NOT_FOUND', message: 'Product not found' });
       // Act
       await productController.getProductById(req, res);
       // Assert
