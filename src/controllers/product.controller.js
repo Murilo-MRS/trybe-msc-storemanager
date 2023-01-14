@@ -12,7 +12,7 @@ const getProductById = async (req, res) => {
   
   const { type, message } = await productService.getProductById(id);
   
-  if (type) return res.status(errorMap.mapError(type)).json(message);
+  if (type) return res.status(errorMap.mapError(type)).json({ message });
     
   res.status(200).json(message);
 };
