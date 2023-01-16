@@ -40,5 +40,57 @@
     "headers": [],
     "params": [],
     "tests": []
+  },
+  {
+    "_id": "8aa4afaa-2b02-4ff3-a1e6-b3f8fb24de7b",
+    "colId": "b81f9898-f2e1-4630-b6fd-f693a354e7bf",
+    "containerId": "",
+    "name": "cadastra produto",
+    "url": "http://localhost:3000/products/",
+    "method": "POST",
+    "sortNum": 30000,
+    "created": "2023-01-16T18:02:00.061Z",
+    "modified": "2023-01-16T18:04:58.600Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"name\": \"Produto Teste 1\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "98bf8be3-bf22-4a73-9627-921c6e9c93ea",
+    "colId": "b81f9898-f2e1-4630-b6fd-f693a354e7bf",
+    "containerId": "",
+    "name": "atuliza infos do produto",
+    "url": "http://localhost:3000/products/3",
+    "method": "PUT",
+    "sortNum": 40000,
+    "created": "2023-01-16T18:04:42.008Z",
+    "modified": "2023-01-16T18:05:18.256Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"name\": \"Pro\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "b294a6e8-082a-4a6a-9787-73cd1ab17e8b",
+    "colId": "b81f9898-f2e1-4630-b6fd-f693a354e7bf",
+    "containerId": "",
+    "name": "Deleta Produto",
+    "url": "http://localhost:3000/products/3",
+    "method": "DELETE",
+    "sortNum": 50000,
+    "created": "2023-01-16T18:05:29.411Z",
+    "modified": "2023-01-16T18:06:12.533Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]

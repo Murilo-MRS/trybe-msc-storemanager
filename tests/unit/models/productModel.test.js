@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const { productModel } = require('../../../src/models');
 const connection  = require('../../../src/models/db/connection');
-const { allProducts, newProduct } = require('./mocks/product.model.mock');
+const { allProducts, newProduct, productUpdated } = require('./mocks/product.model.mock');
 
 describe('Teste da camada Product - Model', function () {
   
@@ -51,6 +51,22 @@ describe('Teste da camada Product - Model', function () {
       const result = await productModel.insert(newProduct);
       // Assert
       expect(result).to.equal(3)
+    });
+  })
+
+  describe('Atualiza info do produto', function () {
+    afterEach(function () {
+      sinon.restore();
+    });
+
+    it('com successo', async function () {
+      // Arrange
+      sinon.stub(connection, 'execute').resolves(productUpdated)
+      // Act
+      const result = await productModel.updateById(1, { name: "Produto atualizado"});
+      // Assert
+      expect(result[0].affectedRows).to.be.deep.equal(1);
+      expect(result[0].changedRows).to.be.deep.equal(1);
     });
   })
 })
