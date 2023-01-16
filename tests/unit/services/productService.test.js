@@ -3,7 +3,7 @@ const sinon = require('sinon');
 const { productModel } = require('../../../src/models');
 const { productService } = require('../../../src/services');
 const { allProducts } = require('../models/mocks/product.model.mock');
-const { createdProduct, newProduct } = require('./mocks/productService.mock.test');
+const { newProduct } = require('./mocks/productService.mock.test');
 
 
 describe('Testando Product - Service', function () {
@@ -61,7 +61,8 @@ describe('Testando Product - Service', function () {
       expect(type).to.be.equal(null);
       expect(message).to.be.deep.equal(allProducts[0]);
     });
-  })
+  });
+  
   describe('Cadastrar novo produto', function () {
             
     afterEach(function () {
@@ -86,6 +87,64 @@ describe('Testando Product - Service', function () {
       // Assert
       expect(type).to.be.equal(null);
       expect(message).to.be.deep.equal(newProduct);
+    });
+  });
+
+  describe('Atualizar produto', function () {
+            
+    afterEach(function () {
+      sinon.restore();
+    });
+
+    it('retorna erro com id inválido', async function () {
+      // Arrange
+      // Act
+      const { type, message } = await productService.updateProductbyId('a', { name:  'Teste' });
+      // Assert
+      expect(type).to.be.equal('INVALID_VALUE');
+      expect(message).to.be.deep.equal('"id" must be a number');
+    });
+
+    it('retorna erro com id de produto inexistente', async function () {
+      // Arrange
+      sinon.stub(productModel, 'findById').resolves(undefined);
+      // Act
+      const { type, message } = await productService.updateProductbyId(3, { name:  'Teste' });
+      // Assert
+      expect(type).to.be.equal('PRODUCT_NOT_FOUND');
+      expect(message).to.be.deep.equal('Product not found');
+    });
+
+    it('retorna erro com "name" inválido', async function () {
+      // Arrange
+      const prodcutId = 3
+      const product = { id: prodcutId, name: 'Teste 123' };
+      const invalidNameUpdate =  "Test";
+
+      sinon.stub(productModel, 'findById').resolves(product);
+      // Act
+      const { type, message } = await productService.updateProductbyId(3, invalidNameUpdate);
+      // Assert
+      expect(type).to.be.equal('INVALID_VALUE');
+      expect(message).to.be.deep.equal('"name" length must be at least 5 characters long');
+    });
+      
+    it('com valores válidos', async function () {
+      // Arrange
+      const prodcutId = 3
+      const product = { id: prodcutId, name: 'Teste' };
+      const validNameUpdate = 'Atualizado';
+      const productUpdated = {id: 3, name: validNameUpdate};
+
+      sinon.stub(productModel, 'findById')
+        .onFirstCall().resolves(product)
+        .onSecondCall().resolves(productUpdated);
+      sinon.stub(productModel, 'updateById').resolves(true);
+      // Act
+      const { type, message } = await productService.updateProductbyId(3, validNameUpdate);
+      // Assert
+      expect(type).to.be.equal(null);
+      expect(message).to.be.deep.equal(productUpdated);
     });
   });
   afterEach(function () {
