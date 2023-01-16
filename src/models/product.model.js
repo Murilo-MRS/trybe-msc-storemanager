@@ -24,7 +24,7 @@ const insert = async (product) => {
     .join(', ');
   
   const [{ insertId }] = await connection.execute(
-    `INSERT INTO products (${columns}) (${placeholders})`,
+    `INSERT INTO products (${columns}) VALUES (${placeholders})`,
     [...Object.values(product)],
   );
 

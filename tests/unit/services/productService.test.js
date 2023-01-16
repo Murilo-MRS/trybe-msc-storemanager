@@ -3,6 +3,7 @@ const sinon = require('sinon');
 const { productModel } = require('../../../src/models');
 const { productService } = require('../../../src/services');
 const { allProducts } = require('../models/mocks/product.model.mock');
+const { createdProduct, newProduct } = require('./mocks/productService.mock.test');
 
 
 describe('Testando Product - Service', function () {
@@ -60,5 +61,34 @@ describe('Testando Product - Service', function () {
       expect(type).to.be.equal(null);
       expect(message).to.be.deep.equal(allProducts[0]);
     });
+  })
+  describe('Cadastrar novo produto', function () {
+            
+    afterEach(function () {
+      sinon.restore();
+    });
+
+    it('retorna erro com name inválido', async function () {
+      // Arrange
+      // Act
+      const { type, message } = await productService.createProduct('a');
+      // Assert
+      expect(type).to.be.equal('INVALID_VALUE');
+      expect(message).to.be.deep.equal('"name" length must be at least 5 characters long');
+    });
+      
+    it('com valores válidos', async function () {
+      // Arrange
+      sinon.stub(productModel, 'insert').resolves(30);
+      sinon.stub(productModel, 'findById').resolves(newProduct);
+      // Act
+      const { type, message } = await productService.createProduct("ProdutoX");
+      // Assert
+      expect(type).to.be.equal(null);
+      expect(message).to.be.deep.equal(newProduct);
+    });
+  });
+  afterEach(function () {
+    sinon.restore();
   });
 });
