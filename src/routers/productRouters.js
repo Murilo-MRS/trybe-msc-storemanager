@@ -5,6 +5,11 @@ const validateInputValueProduct = require('../middlewares/validateNewProduct');
 const router = express.Router();
 
 router.get(
+  '/search',
+  productController.searchByName,
+);
+
+router.get(
   '/',
   productController.getProducts,
 );

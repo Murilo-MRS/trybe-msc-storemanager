@@ -34,7 +34,7 @@ describe('Testando Product - Controller', function () {
       expect(res.status).to.have.been.calledOnceWith(200);
       expect(res.json).to.have.been.calledOnceWith(allProducts);
     });
-  })
+  });
   
   describe('Busca por produto por id', function () {
 
@@ -294,4 +294,45 @@ describe('Testando Product - Controller', function () {
       expect(res.status).to.have.been.calledOnceWith(204);
     });
   });
+    
+  describe('Busca por nome', function () {
+
+    afterEach(function () {
+      sinon.restore();
+    });
+    
+    it('q= vazio é chamado o status com o código 200 e lista todos produtos', async function () {
+      // Arrange
+      const res = {};
+      const req = {
+        query: ''
+      };
+      
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(productService, 'searchByName').resolves({ type: null, message: allProducts });
+      // Act
+      await productController.searchByName(req, res);
+      // Assert
+      expect(res.status).to.have.been.calledOnceWith(200);
+      expect(res.json).to.have.been.calledOnceWith(allProducts);
+    });
+    
+    it('q= "martelo" é chamado o status com o código 200 e lista produto existente', async function () {
+      // Arrange
+      const res = {};
+      const req = {
+        query: 'martelo'
+      };
+      
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(productService, 'searchByName').resolves({ type: null, message: [allProducts[0]] });
+      // Act
+      await productController.searchByName(req, res);
+      // Assert
+      expect(res.status).to.have.been.calledOnceWith(200);
+      expect(res.json).to.have.been.calledOnceWith([allProducts[0]]);
+    });
+  })
 });
