@@ -24,7 +24,7 @@ const productUpdated = [
     changedRows: 1,
   },
   undefined,
-]
+];
 
 module.exports = {
   allProducts,

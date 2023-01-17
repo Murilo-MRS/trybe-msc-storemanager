@@ -14,7 +14,7 @@ describe('Teste da camada Product - Model', function () {
 
     it('Lista retorna com successo', async function () {
       // Arrange
-      sinon.stub(connection, 'execute').resolves([allProducts])
+      sinon.stub(connection, 'execute').resolves([allProducts]);
       // Act
       const result = await productModel.findAll();
       // Assert
@@ -30,11 +30,11 @@ describe('Teste da camada Product - Model', function () {
 
     it('Produto retorna com successo', async function () {
       // Arrange
-      sinon.stub(connection, 'execute').resolves([[allProducts[0]]])
+      sinon.stub(connection, 'execute').resolves([[allProducts[0]]]);
       // Act
       const result = await productModel.findById(1);
       // Assert
-      expect(result).to.be.deep.equal(allProducts[0])
+      expect(result).to.be.deep.equal(allProducts[0]);
     });
   })
   
@@ -46,13 +46,13 @@ describe('Teste da camada Product - Model', function () {
 
     it('com successo', async function () {
       // Arrange
-      sinon.stub(connection, 'execute').resolves([{ insertId: 3 }])
+      sinon.stub(connection, 'execute').resolves([{ insertId: 3 }]);
       // Act
       const result = await productModel.insert(newProduct);
       // Assert
-      expect(result).to.equal(3)
+      expect(result).to.equal(3);
     });
-  })
+  });
 
   describe('Atualiza info do produto', function () {
     afterEach(function () {
@@ -61,12 +61,27 @@ describe('Teste da camada Product - Model', function () {
 
     it('com successo', async function () {
       // Arrange
-      sinon.stub(connection, 'execute').resolves(productUpdated)
+      sinon.stub(connection, 'execute').resolves(productUpdated);
       // Act
       const result = await productModel.updateById(1, { name: "Produto atualizado"});
       // Assert
       expect(result[0].affectedRows).to.be.deep.equal(1);
       expect(result[0].changedRows).to.be.deep.equal(1);
+    });
+  })
+
+  describe('Deleta produto por "id"', function () {
+    afterEach(function () {
+      sinon.restore();
+    });
+
+    it('com successo', async function () {
+      // Arrange
+      sinon.stub(connection, 'execute').resolves([{ affectedRows: 1 }]);
+      // Act
+      const result = await productModel.deleteById(2);
+      // Assert
+      expect(result).to.be.equal(1);
     });
   })
 })
