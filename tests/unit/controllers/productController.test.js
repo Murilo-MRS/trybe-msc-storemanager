@@ -236,4 +236,62 @@ describe('Testando Product - Controller', function () {
       expect(res.json).to.have.been.calledOnceWith(updatedProduct);
     });
   });
+
+  describe('Deletar produto por id', function () {
+
+    afterEach(function () {
+      sinon.restore();
+    });
+
+    it(' inválido é chamado o status com o código 422', async function () {
+      // Arrange
+      const res = {};
+      const req = {
+        params: { id: 'a' }
+      };
+      
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(productService, 'deleteProductById').resolves({ type: 'INVALID_VALUE', message: '"id" must be a number' });
+      // Act
+      await productController.deleteProductById(req, res);
+      // Assert
+      expect(res.status).to.have.been.calledOnceWith(422);
+      expect(res.json).to.have.been.calledOnceWith({ message: '"id" must be a number' });
+    });
+
+    it('inexistente é chamado o status com o código 404', async function () {
+      // Arrange
+      const res = {};
+      const req = {
+        params: { id: 8 }
+      };
+      
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(productService, 'deleteProductById')
+        .resolves({ type: 'PRODUCT_NOT_FOUND', message: 'Product not found' });
+      // Act
+      await productController.deleteProductById(req, res);
+      // Assert
+      expect(res.status).to.have.been.calledOnceWith(404);
+      expect(res.json).to.have.been.calledOnceWith({ message: 'Product not found' });
+    });
+
+    it('é chamado o status com o código 204', async function () {
+      // Arrange
+      const res = {};
+      const req = {
+        params: { id: 1 }
+      };
+      
+      res.status = sinon.stub().returns(res);
+      res.end = sinon.stub().returns();
+      sinon.stub(productService, 'deleteProductById').resolves({ type: null });
+      // ActBusca por produto por id
+      await productController.deleteProductById(req, res);
+      // Assert
+      expect(res.status).to.have.been.calledOnceWith(204);
+    });
+  });
 });

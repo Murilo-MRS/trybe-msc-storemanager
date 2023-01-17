@@ -181,7 +181,6 @@ describe('Testando Product - Service', function () {
       const { type } = await productService.deleteProductById(30);
       // Assert
       expect(type).to.be.equal(null);
-      // expect(message).to.be.deep.equal(1);
     });
   });
 
