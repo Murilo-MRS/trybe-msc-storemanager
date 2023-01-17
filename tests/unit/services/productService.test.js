@@ -147,6 +147,44 @@ describe('Testando Product - Service', function () {
       expect(message).to.be.deep.equal(productUpdated);
     });
   });
+ 
+  describe('Deletar produto', function () {
+            
+    afterEach(function () {
+      sinon.restore();
+    });
+
+    it('retorna erro com "id" inexitente', async function () {
+      // Arrange
+      sinon.stub(productModel, 'findById').resolves(undefined);
+      // Act
+      const { type, message } = await productService.deleteProductById(4);
+      // Assert
+      expect(type).to.be.equal('PRODUCT_NOT_FOUND');
+      expect(message).to.be.deep.equal('Product not found');
+    });
+
+    it('retorna erro com "id" inválido', async function () {
+      // Arrange
+      // Act
+      const { type, message } = await productService.deleteProductById('a');
+      // Assert
+      expect(type).to.be.equal('INVALID_VALUE');
+      expect(message).to.be.deep.equal('"id" must be a number');
+    });
+      
+    it('com valores válidos', async function () {
+      // Arrange
+      sinon.stub(productModel, 'deleteById').resolves(1);
+      sinon.stub(productModel, 'findById').resolves(newProduct);
+      // Act
+      const { type } = await productService.deleteProductById(30);
+      // Assert
+      expect(type).to.be.equal(null);
+      // expect(message).to.be.deep.equal(1);
+    });
+  });
+
   afterEach(function () {
     sinon.restore();
   });

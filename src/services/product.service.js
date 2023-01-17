@@ -52,7 +52,7 @@ const deleteProductById = async (productId) => {
 
   await productModel.deleteById(productId);
 
-  return { type: null, message: '' };
+  return { type: null };
 };
 
 module.exports = {
