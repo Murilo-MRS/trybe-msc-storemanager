@@ -184,6 +184,23 @@ describe('Testando Product - Service', function () {
     });
   });
 
+  describe('Buscar por produtos com', function () {
+    
+    afterEach(function () {
+      sinon.restore();
+    });
+    
+    it('com query vazia sucesso', async function () {
+      // Arrange
+      sinon.stub(productModel, 'findByName').resolves(allProducts);
+      // Act
+      const { type, message } = await productService.searchByName('');
+      // Assert
+      expect(type).to.be.equal(null)
+      expect(message).to.be.deep.equal(allProducts)
+    });
+  });
+
   afterEach(function () {
     sinon.restore();
   });
