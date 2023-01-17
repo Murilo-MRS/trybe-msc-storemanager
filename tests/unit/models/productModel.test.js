@@ -20,7 +20,7 @@ describe('Teste da camada Product - Model', function () {
       // Assert
       expect(result).to.be.deep.equal(allProducts)
     });
-  })
+  });
   
   describe('Lista produto por id', function () {
     
@@ -36,7 +36,7 @@ describe('Teste da camada Product - Model', function () {
       // Assert
       expect(result).to.be.deep.equal(allProducts[0]);
     });
-  })
+  });
   
   describe('Cadastra produto', function () {
     
@@ -83,5 +83,21 @@ describe('Teste da camada Product - Model', function () {
       // Assert
       expect(result).to.be.equal(1);
     });
-  })
+  });
+
+  describe('Buscar pelo Product "name"', function () {
+    
+    afterEach(function () {
+      sinon.restore();
+    });
+
+    it('retorna com successo', async function () {
+      // Arrange
+      sinon.stub(connection, 'execute').resolves([allProducts]);
+      // Act
+      const result = await productModel.findByName('');
+      // Assert
+      expect(result).to.be.deep.equal(allProducts);
+    });
+  });
 })

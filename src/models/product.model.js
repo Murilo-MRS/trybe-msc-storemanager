@@ -50,10 +50,19 @@ const deleteById = async (productId) => {
   return affectedRows;
 };
 
+const findByName = async (name) => {
+  const [result] = await connection.execute(
+    `SELECT * FROM products WHERE name LIKE '%${name}%'`,
+  );
+  
+  return result; 
+};
+
 module.exports = {
   findAll,
   findById,
   insert,
   updateById,
   deleteById,
+  findByName,
 };
