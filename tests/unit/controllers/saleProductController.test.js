@@ -2,11 +2,357 @@ const { expect } = require('chai');
 const chai = require('chai');
 const sinon = require('sinon');
 const sinonChai = require('sinon-chai');
-const { productController } = require('../../../src/controllers');
-const validateNewProduct = require('../../../src/middlewares/validateNewProduct');
-
-const { productService } = require('../../../src/services');
-const { allProducts } = require('../models/mocks/product.model.mock');
-const { addedProduct, updatedProduct } = require('./mocks/product.controller.mock');
+const { saleProductController } = require('../../../src/controllers');
+const validateNewSaleProduct = require('../../../src/middlewares/validateNewSaleProduct');
+const { saleProductService } = require('../../../src/services');
+const { addedSaleProduct } = require('./mocks/saleProduct.controller.mocks');
 
 chai.use(sinonChai);
+
+describe('Testando SalesProducts - Controller', function () {
+  
+  // describe('Listar todos produtos', function () {
+  //   beforeEach(function () {
+  //     sinon.stub(productService, 'getProducts').resolves({ type: null, message: allProducts });
+  //   });
+  //   afterEach(function () {
+  //     sinon.restore();
+  //   });
+    
+  //   it('é chamado o status com o código 200', async function () {
+  //     // Arrange
+  //     const res = {};
+  //     const req = {};
+      
+  //     res.status = sinon.stub().returns(res);
+  //     res.json = sinon.stub().returns();
+  //     // Act
+  //     await productController.getProducts(req, res);
+  //     // Assert
+  //     expect(res.status).to.have.been.calledOnceWith(200);
+  //     expect(res.json).to.have.been.calledOnceWith(allProducts);
+  //   });
+  // });
+  
+  // describe('Busca por produto por id', function () {
+
+  //   afterEach(function () {
+  //     sinon.restore();
+  //   });
+
+  //   it(' inválido é chamado o status com o código 422', async function () {
+  //     // Arrange
+  //     const res = {};
+  //     const req = {
+  //       params: { id: 'a' }
+  //     };
+      
+  //     res.status = sinon.stub().returns(res);
+  //     res.json = sinon.stub().returns();
+  //     sinon.stub(productService, 'getProductById').resolves({ type: 'INVALID_VALUE', message: '"id" must be a number' });
+  //     // Act
+  //     await productController.getProductById(req, res);
+  //     // Assert
+  //     expect(res.status).to.have.been.calledOnceWith(422);
+  //     expect(res.json).to.have.been.calledOnceWith({ message: '"id" must be a number' });
+  //   });
+
+  //   it('inexistente é chamado o status com o código 404', async function () {
+  //     // Arrange
+  //     const res = {};
+  //     const req = {
+  //       params: { id: 8 }
+  //     };
+      
+  //     res.status = sinon.stub().returns(res);
+  //     res.json = sinon.stub().returns();
+  //     sinon.stub(productService, 'getProductById')
+  //       .resolves({ type: 'PRODUCT_NOT_FOUND', message: 'Product not found' });
+  //     // Act
+  //     await productController.getProductById(req, res);
+  //     // Assert
+  //     expect(res.status).to.have.been.calledOnceWith(404);
+  //     expect(res.json).to.have.been.calledOnceWith({ message: 'Product not found' });
+  //   });
+
+  //   it('é chamado o status com o código 200', async function () {
+  //     // Arrange
+  //     const res = {};
+  //     const req = {
+  //       params: { id: 1 }
+  //     };
+      
+  //     res.status = sinon.stub().returns(res);
+  //     res.json = sinon.stub().returns();
+  //     sinon.stub(productService, 'getProductById').resolves({ type: null, message: allProducts[0] });
+  //     // ActBusca por produto por id
+  //     await productController.getProductById(req, res);
+  //     // Assert
+  //     expect(res.status).to.have.been.calledOnceWith(200);
+  //     expect(res.json).to.have.been.calledOnceWith(allProducts[0]);
+  //   });
+  // });
+
+  describe('Cadastra nova venda', function () {
+
+    afterEach(function () {
+      sinon.restore();
+    });
+
+    it(' inválido é chamado o status com o código 422', async function () {
+      // Arrange
+      const res = {};
+      const req = {
+        body: [
+          {
+            productId: 1,
+            quantity: -1
+          }
+        ]
+      };
+      
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      
+      sinon.stub(saleProductService, 'addSaleProduct')
+        .resolves({ type: 'INVALID_VALUE', message: '"quantity" must be greater than or equal to 1' });
+      // Act
+      await saleProductController.addSaleProduct(req, res);
+      // Assert
+      expect(res.status).to.have.been.calledOnceWith(422);
+      expect(res.json).to.have.been.calledOnceWith({ message: '"quantity" must be greater than or equal to 1' });
+    });
+
+    it('com a propriedade "quantity" inexistente é chamado o status com o código 400', async function () {
+      // Arrange
+      const res = {};
+      const req = {
+        body: [{ id: 8, productId: 2 }]
+      };
+      
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      
+      // Act
+      await validateNewSaleProduct(req, res);
+      // Assert
+      expect(res.status).to.have.been.calledOnceWith(400);
+      expect(res.json).to.have.been.calledOnceWith({ message: '"quantity" is required' });
+    });
+
+    it('com a propriedade "productId" inexistente é chamado o status com o código 400', async function () {
+      // Arrange
+      const res = {};
+      const req = {
+        body: [{ quantity: 8, id: 2 }]
+      };
+      
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      
+      // Act
+      await validateNewSaleProduct(req, res);
+      // Assert
+      expect(res.status).to.have.been.calledOnceWith(400);
+      expect(res.json).to.have.been.calledOnceWith({ message: '"productId" is required' });
+    });
+
+    it('é chamado o status com o código 201', async function () {
+      // Arrange
+      const res = {};
+      const req = {
+        body: [{ quantity: 8, productId: 2 }]
+      };
+      
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(saleProductService, 'addSaleProduct').resolves({ type: null, message: addedSaleProduct });
+      // Act
+      await saleProductController.addSaleProduct(req, res);
+      // Assert
+      expect(res.status).to.have.been.calledOnceWith(201);
+      expect(res.json).to.have.been.calledOnceWith(addedSaleProduct);
+    });
+  });
+
+  // describe('Atualiza produto', function () {
+
+  //   afterEach(function () {
+  //     sinon.restore();
+  //   });
+
+  //   it(' inválido é chamado o status com o código 422', async function () {
+  //     // Arrange
+  //     const res = {};
+  //     const req = {
+  //       body: { name: 'a' },
+  //       params: { id: 1 },
+  //     };
+      
+  //     res.status = sinon.stub().returns(res);
+  //     res.json = sinon.stub().returns();
+      
+  //     sinon.stub(productService, 'updateProductbyId')
+  //       .resolves({ type: 'INVALID_VALUE', message: '"name" length must be at least 5 characters long' });
+  //     // Act
+  //     await productController.updateProductbyId(req, res);
+  //     // Assert
+  //     expect(res.status).to.have.been.calledOnceWith(422);
+  //     expect(res.json).to.have.been.calledOnceWith({ message: '"name" length must be at least 5 characters long' });
+  //   });
+
+  //   it('com a propriedade "name "inexistente é chamado o status com o código 400', async function () {
+  //     // Arrange
+  //     const res = {};
+  //     const req = {
+  //       body: { id: 8 }
+  //     };
+      
+  //     res.status = sinon.stub().returns(res);
+  //     res.json = sinon.stub().returns();
+      
+  //     // Act
+  //     await validateNewProduct(req, res);
+  //     // Assert
+  //     expect(res.status).to.have.been.calledOnceWith(400);
+  //     expect(res.json).to.have.been.calledOnceWith({ message: '"name" is required' });
+  //   });
+
+  //   it('com "id" inexistente é chamado o status com o código 404', async function () {
+  //     // Arrange
+  //     const res = {};
+  //     const req = {
+  //       params: { id: 3 },
+  //       body: { name: "Atualizado" },
+  //     };
+      
+  //     res.status = sinon.stub().returns(res);
+  //     res.json = sinon.stub().returns();
+      
+  //     sinon.stub(productService, 'updateProductbyId')
+  //       .resolves({ type: 'PRODUCT_NOT_FOUND', message: 'Product not found' });
+  //     // Act
+  //     await productController.updateProductbyId(req, res);
+  //     // Assert
+  //     expect(res.status).to.have.been.calledOnceWith(404);
+  //     expect(res.json).to.have.been.calledOnceWith({ message: 'Product not found' });
+  //   });
+
+  //   it('é chamado o status com o código 200', async function () {
+  //     // Arrange
+  //     const res = {};
+  //     const req = {
+  //       body: { name: "Atualizado" },
+  //       params: { id: 1 },
+  //     };
+      
+  //     res.status = sinon.stub().returns(res);
+  //     res.json = sinon.stub().returns();
+  //     sinon.stub(productService, 'updateProductbyId').resolves({ type: null, message: updatedProduct });
+  //     // Act
+  //     await productController.updateProductbyId(req, res);
+  //     // Assert
+  //     expect(res.status).to.have.been.calledOnceWith(200);
+  //     expect(res.json).to.have.been.calledOnceWith(updatedProduct);
+  //   });
+  // });
+
+  // describe('Deletar produto por id', function () {
+
+  //   afterEach(function () {
+  //     sinon.restore();
+  //   });
+
+  //   it(' inválido é chamado o status com o código 422', async function () {
+  //     // Arrange
+  //     const res = {};
+  //     const req = {
+  //       params: { id: 'a' }
+  //     };
+      
+  //     res.status = sinon.stub().returns(res);
+  //     res.json = sinon.stub().returns();
+  //     sinon.stub(productService, 'deleteProductById').resolves({ type: 'INVALID_VALUE', message: '"id" must be a number' });
+  //     // Act
+  //     await productController.deleteProductById(req, res);
+  //     // Assert
+  //     expect(res.status).to.have.been.calledOnceWith(422);
+  //     expect(res.json).to.have.been.calledOnceWith({ message: '"id" must be a number' });
+  //   });
+
+  //   it('inexistente é chamado o status com o código 404', async function () {
+  //     // Arrange
+  //     const res = {};
+  //     const req = {
+  //       params: { id: 8 }
+  //     };
+      
+  //     res.status = sinon.stub().returns(res);
+  //     res.json = sinon.stub().returns();
+  //     sinon.stub(productService, 'deleteProductById')
+  //       .resolves({ type: 'PRODUCT_NOT_FOUND', message: 'Product not found' });
+  //     // Act
+  //     await productController.deleteProductById(req, res);
+  //     // Assert
+  //     expect(res.status).to.have.been.calledOnceWith(404);
+  //     expect(res.json).to.have.been.calledOnceWith({ message: 'Product not found' });
+  //   });
+
+  //   it('é chamado o status com o código 204', async function () {
+  //     // Arrange
+  //     const res = {};
+  //     const req = {
+  //       params: { id: 1 }
+  //     };
+      
+  //     res.status = sinon.stub().returns(res);
+  //     res.end = sinon.stub().returns();
+  //     sinon.stub(productService, 'deleteProductById').resolves({ type: null });
+  //     // ActBusca por produto por id
+  //     await productController.deleteProductById(req, res);
+  //     // Assert
+  //     expect(res.status).to.have.been.calledOnceWith(204);
+  //   });
+  // });
+    
+  // describe('Busca por nome', function () {
+
+  //   afterEach(function () {
+  //     sinon.restore();
+  //   });
+    
+  //   it('q= vazio é chamado o status com o código 200 e lista todos produtos', async function () {
+  //     // Arrange
+  //     const res = {};
+  //     const req = {
+  //       query: ''
+  //     };
+      
+  //     res.status = sinon.stub().returns(res);
+  //     res.json = sinon.stub().returns();
+  //     sinon.stub(productService, 'searchByName').resolves({ type: null, message: allProducts });
+  //     // Act
+  //     await productController.searchByName(req, res);
+  //     // Assert
+  //     expect(res.status).to.have.been.calledOnceWith(200);
+  //     expect(res.json).to.have.been.calledOnceWith(allProducts);
+  //   });
+    
+  //   it('q= "martelo" é chamado o status com o código 200 e lista produto existente', async function () {
+  //     // Arrange
+  //     const res = {};
+  //     const req = {
+  //       query: 'martelo'
+  //     };
+      
+  //     res.status = sinon.stub().returns(res);
+  //     res.json = sinon.stub().returns();
+  //     sinon.stub(productService, 'searchByName').resolves({ type: null, message: [allProducts[0]] });
+  //     // Act
+  //     await productController.searchByName(req, res);
+  //     // Assert
+  //     expect(res.status).to.have.been.calledOnceWith(200);
+  //     expect(res.json).to.have.been.calledOnceWith([allProducts[0]]);
+  //   });
+  // })
+});
