@@ -4,6 +4,21 @@
     "colName": "StoreManager",
     "created": "2023-01-14T13:45:33.767Z",
     "sortNum": 10000,
-    "folders": []
+    "folders": [
+      {
+        "_id": "74db84e9-8bd7-452d-92e7-c58494c4c386",
+        "name": "products",
+        "containerId": "",
+        "created": "2023-01-18T18:32:38.031Z",
+        "sortNum": 10000
+      },
+      {
+        "_id": "2cdd5a0d-c3b7-441e-942d-a6b6ec959bac",
+        "name": "sales",
+        "containerId": "",
+        "created": "2023-01-18T18:33:27.497Z",
+        "sortNum": 20000
+      }
+    ]
   }
 ]
