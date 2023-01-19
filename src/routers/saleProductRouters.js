@@ -21,11 +21,11 @@ router.post(
   saleProductController.addSaleProduct,
 );
 
-// router.put(
-//   '/:id',
-//   // validateInputValueProduct,
-//   saleController.updateSaleById,
-// );
+router.put(
+  '/:id',
+  validateNewSaleProduct,
+  saleProductController.updateSale,
+);
 
 router.delete(
   '/:id',
