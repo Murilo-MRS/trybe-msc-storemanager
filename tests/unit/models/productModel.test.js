@@ -63,7 +63,7 @@ describe('Teste da camada Product - Model', function () {
       // Arrange
       sinon.stub(connection, 'execute').resolves(productUpdated);
       // Act
-      const result = await productModel.updateById(1, { name: "Produto atualizado"});
+      const result = await productModel.updateById(1, { name: "Produto atualizado" });
       // Assert
       expect(result[0].affectedRows).to.be.deep.equal(1);
       expect(result[0].changedRows).to.be.deep.equal(1);
@@ -100,4 +100,4 @@ describe('Teste da camada Product - Model', function () {
       expect(result).to.be.deep.equal(allProducts);
     });
   });
-})
+});
