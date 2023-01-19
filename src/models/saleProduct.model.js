@@ -22,14 +22,14 @@ const listSaleWithDateById = async (saleId) => {
   return camelize(result);
 };
 
-const findAllById = async (saleId) => {
-  const [result] = await connection.execute(
-    'SELECT product_id, quantity FROM StoreManager.sales_products WHERE sale_id = ?',
-    [saleId],
-  );
+// const findAllById = async (saleId) => {
+//   const [result] = await connection.execute(
+//     'SELECT product_id, quantity FROM StoreManager.sales_products WHERE sale_id = ?',
+//     [saleId],
+//   );
   
-  return result;
-};
+//   return result;
+// };
 
 const addNewProductSale = async ({ saleId, productId, quantity }) => {
   const [{ insertId }] = await connection.execute(
@@ -68,7 +68,7 @@ const addNewProductSale = async ({ saleId, productId, quantity }) => {
 // };
 
 module.exports = {
-  findAllById,
+  // findAllById,
   addNewProductSale,
   listSaleWithDate,
   listSaleWithDateById,

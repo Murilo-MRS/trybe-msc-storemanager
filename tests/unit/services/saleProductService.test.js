@@ -2,64 +2,55 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const { saleProductModel, saleModel, productModel } = require('../../../src/models');
 const { saleProductService } = require('../../../src/services');
-const { saleProductsById, productSold, saleProductsService } = require('./mocks/saleProduct.service.mock');
+const { saleProductsById, productSold, saleProductsService, allSaleProducts } = require('./mocks/saleProduct.service.mock');
 
 describe('Testando SalesProducts - Service', function () {
   
-  // describe('Lista todos os produtos', function () {
-  //   beforeEach(function () {
-  //     sinon.stub(saleProductModel, 'findAll').resolves(allProducts);
-  //   });
+  describe('Lista todos os produtos', function () {
+    beforeEach(function () {
+      sinon.stub(saleProductModel, 'listSaleWithDate').resolves(allSaleProducts);
+    });
 
-  //   afterEach(function () {
-  //     sinon.restore();
-  //   });
+    afterEach(function () {
+      sinon.restore();
+    });
     
-  //   it('com sucesso', async function () {
-  //     // Arrange
-  //     // Act
-  //     const { type, message } = await productService.getProducts();
-  //     // Assert
-  //     expect(type).to.be.equal(null)
-  //     expect(message).to.be.deep.equal(allProducts)
-  //   });
-  // });
+    it('com sucesso', async function () {
+      // Arrange
+      // Act
+      const { type, message } = await saleProductService.getAllSales();
+      // Assert
+      expect(type).to.be.equal(null)
+      expect(message).to.be.deep.equal(allSaleProducts)
+    });
+  });
   
-  // describe('Busca por produto', function () {
+  describe('Lista venda por Id', function () {
             
-  //   afterEach(function () {
-  //     sinon.restore();
-  //   });
+    afterEach(function () {
+      sinon.restore();
+    });
     
-  //   it('retorna erro com id inválido', async function () {
-  //     // Arrange
-  //     // Act
-  //     const { type, message } = await productService.getProductById('a');
-  //     // Assert
-  //     expect(type).to.be.equal('INVALID_VALUE');
-  //     expect(message).to.be.deep.equal('"id" must be a number');
-  //   });
+    it('retorna erro por sale_id inexistente', async function () {
+      // Arrange
+      sinon.stub(saleProductModel, 'listSaleWithDateById').resolves([]);
+      // Act
+      const { type, message } = await saleProductService.getAllSalesbyId(8);
+      // Assert
+      expect(type).to.be.equal('SALE_NOT_FOUND');
+      expect(message).to.be.deep.equal('Sale not found');
+    });
     
-  //   it('retorna erro por id inexistente', async function () {
-  //     // Arrange
-  //     sinon.stub(saleProductModel, 'findById').resolves(undefined);
-  //     // Act
-  //     const { type, message } = await productService.getProductById(8);
-  //     // Assert
-  //     expect(type).to.be.equal('PRODUCT_NOT_FOUND');
-  //     expect(message).to.be.deep.equal('Product not found');
-  //   });
-    
-  //   it('com id existente com sucesso', async function () {
-  //     // Arrange
-  //     sinon.stub(saleProductModel, 'findById').resolves(allProducts[0]);
-  //     // Act
-  //     const { type, message } = await productService.getProductById(1);
-  //     // Assert
-  //     expect(type).to.be.equal(null);
-  //     expect(message).to.be.deep.equal(allProducts[0]);
-  //   });
-  // });
+    it('com id existente com sucesso', async function () {
+      // Arrange
+      sinon.stub(saleProductModel, 'listSaleWithDateById').resolves(saleProductsById);
+      // Act
+      const { type, message } = await saleProductService.getAllSalesbyId(1);
+      // Assert
+      expect(type).to.be.equal(null);
+      expect(message).to.be.deep.equal(saleProductsById);
+    });
+  });
   
   describe('Cadastrar nova venda', function () {
             
@@ -68,7 +59,6 @@ describe('Testando SalesProducts - Service', function () {
     });
 
     const invalidQuantity = -1;
-    const validQuantity = 5;
     const invalidProductId = 3;
     
     it('retorna erro com "quantity" inválido', async function () {
@@ -98,7 +88,6 @@ describe('Testando SalesProducts - Service', function () {
         .onFirstCall().resolves(1)
         .onSecondCall().resolves(2);
       
-      sinon.stub(saleProductModel, 'findAllById').resolves(productSold);
       // Act
       const { type, message } = await saleProductService.addSaleProduct(productSold);
       // Assert

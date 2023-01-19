@@ -54,7 +54,7 @@ describe('Teste da camada SaleProduct - Model', function () {
     });
   });
 
-  // describe('Atualiza info do produto', function () {
+  // describe('Atualiza info da venda', function () {
   //   afterEach(function () {
   //     sinon.restore();
   //   });
@@ -70,7 +70,7 @@ describe('Teste da camada SaleProduct - Model', function () {
   //   });
   // })
 
-  // describe('Deleta produto por "id"', function () {
+  // describe('Deleta venda por "id"', function () {
   //   afterEach(function () {
   //     sinon.restore();
   //   });
