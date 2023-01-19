@@ -4,7 +4,7 @@ const { saleProductModel } = require('../../../src/models');
 const connection  = require('../../../src/models/db/connection');
 const { saleProductsById, newSaleProduct } = require('./mocks/saleProduct.model.mock');
 
-describe('Teste da camada Product - Model', function () {
+describe('Teste da camada SaleProduct - Model', function () {
   
   // describe('Listar todos os produtos', function () {
     
