@@ -30,7 +30,7 @@ const getAllSales = async () => {
   return { type: null, message: allSales };
 }; 
 
-const getAllSalesbyId = async (saleId) => {
+const getAllSalesbyId = async (saleId) => { 
   const sale = await saleProductModel.listSaleWithDateById(saleId);
   if (sale.length === 0) return { type: 'SALE_NOT_FOUND', message: 'Sale not found' };
 
