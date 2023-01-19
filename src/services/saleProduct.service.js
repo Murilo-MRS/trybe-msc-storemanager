@@ -8,8 +8,8 @@ const addSaleProduct = async (salesProductsList) => {
   const saleId = await saleModel.addNewSale();
 
   await Promise.all(
-    salesProductsList.map(async (productSold) => {
-      await saleProductModel.addNewProductSale({ saleId, ...productSold });
+    salesProductsList.map(async ({ productId, quantity }) => {
+      await saleProductModel.addNewProductSale({ saleId, productId, quantity });
     }),
   );
 

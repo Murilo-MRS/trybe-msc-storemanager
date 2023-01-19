@@ -164,12 +164,12 @@
     "method": "POST",
     "sortNum": 61250,
     "created": "2023-01-18T18:36:39.043Z",
-    "modified": "2023-01-19T00:53:09.555Z",
+    "modified": "2023-01-19T01:47:42.617Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "[\n  {\n    \"productId\": -2,\n    \"quantity\": 10\n  },\n  {\n    \"productId\": 1,\n    \"quantity\": 2\n  }\n]",
+      "raw": "[\n  {\n    \"productId\": 1,\n    \"quantity\": 1\n  },\n  {\n    \"productId\": 2,\n    \"quantity\": 5\n  }\n]",
       "form": []
     },
     "tests": []
