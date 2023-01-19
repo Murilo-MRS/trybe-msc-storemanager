@@ -70,7 +70,7 @@ describe('Teste da camada SaleProduct - Model', function () {
   //   });
   // })
 
-  describe.only('Deleta venda por "id"', function () {
+  describe('Deleta venda por "id"', function () {
     afterEach(function () {
       sinon.restore();
     });

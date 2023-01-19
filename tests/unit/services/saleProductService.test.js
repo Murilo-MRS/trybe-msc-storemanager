@@ -160,29 +160,29 @@ describe('Testando SalesProducts - Service', function () {
       sinon.restore();
     });
 
-    it('retorna erro com "id" inexitente', async function () {
+    it('retorna erro com "id" inexistente', async function () {
       // Arrange
-      sinon.stub(saleProductModel, 'findById').resolves(undefined);
+      sinon.stub(saleProductModel, 'listSaleWithDateById').resolves([]);
       // Act
       const { type, message } = await saleProductService.deleteSale(4);
       // Assert
-      expect(type).to.be.equal('PRODUCT_NOT_FOUND');
-      expect(message).to.be.deep.equal('Product not found');
-    });
-
-    it('retorna erro com "id" inválido', async function () {
-      // Arrange
-      // Act
-      const { type, message } = await saleProductService.deleteSale('a');
-      // Assert
-      expect(type).to.be.equal('INVALID_VALUE');
-      expect(message).to.be.deep.equal('"id" must be a number');
+      expect(type).to.be.equal('SALE_NOT_FOUND');
+      expect(message).to.be.deep.equal('Sale not found');
     });
       
     it('com valores válidos', async function () {
       // Arrange
-      sinon.stub(saleProductModel, 'deleteById').resolves(1);
-      sinon.stub(saleProductModel, 'findById').resolves(newProduct);
+      const foundSale = [
+        {
+          "saleId": 1,
+          "date": "2021-09-09T04:54:29.000Z",
+          "productId": 1,
+          "quantity": 2
+        }
+      ]
+      sinon.stub(saleModel, 'deleteFromSales').resolves(1);
+      sinon.stub(saleProductModel, 'deleteFromSalesProducts').resolves(1);
+      sinon.stub(saleProductModel, 'listSaleWithDateById').resolves(foundSale);
       // Act
       const { type } = await saleProductService.deleteSale(30);
       // Assert
