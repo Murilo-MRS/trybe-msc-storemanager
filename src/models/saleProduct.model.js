@@ -1,4 +1,4 @@
-const camelize = require('camelize');
+// const camelize = require('camelize');
 const connection = require('./db/connection');
 
 // const findAll = async () => {
@@ -10,16 +10,16 @@ const connection = require('./db/connection');
 
 const findAllById = async (saleId) => {
   const [result] = await connection.execute(
-    'SELECT product_id, quantity FROM sales_products WHERE sale_id = ?',
+    'SELECT product_id, quantity FROM StoreManager.sales_products WHERE sale_id = ?',
     [saleId],
   );
   
-  return camelize(result);
+  return result;
 };
 
 const addNewProductSale = async ({ saleId, productId, quantity }) => {
   const [{ insertId }] = await connection.execute(
-    'INSERT INTO sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?)',
+    'INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?)',
     [saleId, productId, quantity],
   );
 
