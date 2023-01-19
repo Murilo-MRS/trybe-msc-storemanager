@@ -1,4 +1,4 @@
-const camelize = require('camelize');
+// const camelize = require('camelize');
 const schema = require('./validations/validators');
 const { saleModel, saleProductModel } = require('../models');
 
@@ -14,12 +14,12 @@ const addSaleProduct = async (salesProductsList) => {
     }),
   );
 
-  const itemsList = await saleProductModel.findAllById(saleId);
-  const itemsSold = itemsList.map((item) => camelize(item));
+  // const itemsList = await saleProductModel.findAllById(saleId);
+  // const itemsSold = itemsList.map((item) => camelize(item));
 
   const addedSale = {
     id: saleId,
-    itemsSold: [...itemsSold],
+    itemsSold: salesProductsList,
   };
 
   return { type: null, message: addedSale };
