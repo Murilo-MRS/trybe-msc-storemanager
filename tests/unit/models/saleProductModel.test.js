@@ -54,21 +54,20 @@ describe('Teste da camada SaleProduct - Model', function () {
     });
   });
 
-  // describe('Atualiza info da venda', function () {
-  //   afterEach(function () {
-  //     sinon.restore();
-  //   });
+  describe('Atualiza info da venda', function () {
+    afterEach(function () {
+      sinon.restore();
+    });
 
-  //   it('com successo', async function () {
-  //     // Arrange
-  //     sinon.stub(connection, 'execute').resolves(productUpdated);
-  //     // Act
-  //     const result = await saleProductModel.updateById(1, { name: "Produto atualizado" });
-  //     // Assert
-  //     expect(result[0].affectedRows).to.be.deep.equal(1);
-  //     expect(result[0].changedRows).to.be.deep.equal(1);
-  //   });
-  // })
+    it('com successo', async function () {
+      // Arrange
+      sinon.stub(connection, 'execute').resolves([{ affectedRows: 1}]);
+      // Act
+      const result = await saleProductModel.updateSale(2, { productId: 2, quantity: 2 });
+      // Assert
+      expect(result).to.be.deep.equal(1);
+    });
+  })
 
   describe('Deleta venda por "id"', function () {
     afterEach(function () {
