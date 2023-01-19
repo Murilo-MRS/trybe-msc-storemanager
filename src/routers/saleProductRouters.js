@@ -27,9 +27,9 @@ router.post(
 //   saleController.updateSaleById,
 // );
 
-// router.delete(
-//   '/:id',
-//   saleController.deleteSaleById,
-// );
+router.delete(
+  '/:id',
+  saleProductController.deleteSale,
+);
 
 module.exports = router;

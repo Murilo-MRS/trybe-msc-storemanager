@@ -51,25 +51,18 @@ const addNewProductSale = async ({ saleId, productId, quantity }) => {
 //   );
 // };
 
-// const deleteById = async (productId) => {
-//   const [{ affectedRows }] = await connection.execute(
-//     'DELETE FROM products WHERE id = ?',
-//     [productId],
-//   );
-//   return affectedRows;
-// };
-
-// const findByName = async (name) => {
-//   const [result] = await connection.execute(
-//     `SELECT * FROM products WHERE name LIKE '%${name}%'`,
-//   );
-  
-//   return result; 
-// };
+const deleteFromSalesProducts = async (saleId) => {
+  const [{ affectedRows }] = await connection.execute(
+    'DELETE FROM sales_products WHERE sale_id = ?',
+    [saleId],
+  );
+  return affectedRows;
+};
 
 module.exports = {
   // findAllById,
   addNewProductSale,
   listSaleWithDate,
   listSaleWithDateById,
+  deleteFromSalesProducts,
 };

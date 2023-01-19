@@ -1,4 +1,3 @@
-// const camelize = require('camelize');
 const schema = require('./validations/validators');
 const { saleModel, saleProductModel } = require('../models');
 
@@ -13,9 +12,6 @@ const addSaleProduct = async (salesProductsList) => {
       await saleProductModel.addNewProductSale({ saleId, productId, quantity });
     }),
   );
-
-  // const itemsList = await saleProductModel.findAllById(saleId);
-  // const itemsSold = itemsList.map((item) => camelize(item));
 
   const addedSale = {
     id: saleId,
@@ -37,8 +33,19 @@ const getAllSalesbyId = async (saleId) => {
   return { type: null, message: sale };
 }; 
 
+const deleteSale = async (saleId) => {
+  const sale = await saleProductModel.listSaleWithDateById(saleId);
+  if (sale.length === 0) return { type: 'SALE_NOT_FOUND', message: 'Sale not found' };
+
+  await saleModel.deleteFromSales(saleId);
+  await saleProductModel.deleteFromSalesProducts(saleId);
+
+  return { type: null };
+};
+
 module.exports = {
   addSaleProduct,
   getAllSales,
   getAllSalesbyId,
+  deleteSale,
 };

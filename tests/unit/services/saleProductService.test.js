@@ -154,41 +154,41 @@ describe('Testando SalesProducts - Service', function () {
   //   });
   // });
  
-  // describe('Deletar produto', function () {
+  describe('Deletar produto', function () {
             
-  //   afterEach(function () {
-  //     sinon.restore();
-  //   });
+    afterEach(function () {
+      sinon.restore();
+    });
 
-  //   it('retorna erro com "id" inexitente', async function () {
-  //     // Arrange
-  //     sinon.stub(saleProductModel, 'findById').resolves(undefined);
-  //     // Act
-  //     const { type, message } = await saleProductService.deleteSale(4);
-  //     // Assert
-  //     expect(type).to.be.equal('PRODUCT_NOT_FOUND');
-  //     expect(message).to.be.deep.equal('Product not found');
-  //   });
+    it('retorna erro com "id" inexitente', async function () {
+      // Arrange
+      sinon.stub(saleProductModel, 'findById').resolves(undefined);
+      // Act
+      const { type, message } = await saleProductService.deleteSale(4);
+      // Assert
+      expect(type).to.be.equal('PRODUCT_NOT_FOUND');
+      expect(message).to.be.deep.equal('Product not found');
+    });
 
-  //   it('retorna erro com "id" inválido', async function () {
-  //     // Arrange
-  //     // Act
-  //     const { type, message } = await saleProductService.deleteSale('a');
-  //     // Assert
-  //     expect(type).to.be.equal('INVALID_VALUE');
-  //     expect(message).to.be.deep.equal('"id" must be a number');
-  //   });
+    it('retorna erro com "id" inválido', async function () {
+      // Arrange
+      // Act
+      const { type, message } = await saleProductService.deleteSale('a');
+      // Assert
+      expect(type).to.be.equal('INVALID_VALUE');
+      expect(message).to.be.deep.equal('"id" must be a number');
+    });
       
-  //   it('com valores válidos', async function () {
-  //     // Arrange
-  //     sinon.stub(saleProductModel, 'deleteById').resolves(1);
-  //     sinon.stub(saleProductModel, 'findById').resolves(newProduct);
-  //     // Act
-  //     const { type } = await saleProductService.deleteSale(30);
-  //     // Assert
-  //     expect(type).to.be.equal(null);
-  //   });
-  // });
+    it('com valores válidos', async function () {
+      // Arrange
+      sinon.stub(saleProductModel, 'deleteById').resolves(1);
+      sinon.stub(saleProductModel, 'findById').resolves(newProduct);
+      // Act
+      const { type } = await saleProductService.deleteSale(30);
+      // Assert
+      expect(type).to.be.equal(null);
+    });
+  });
 
   afterEach(function () {
     sinon.restore();
