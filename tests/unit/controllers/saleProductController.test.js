@@ -5,93 +5,76 @@ const sinonChai = require('sinon-chai');
 const { saleProductController } = require('../../../src/controllers');
 const validateNewSaleProduct = require('../../../src/middlewares/validateNewSaleProduct');
 const { saleProductService } = require('../../../src/services');
-const { addedSaleProduct } = require('./mocks/saleProduct.controller.mocks');
+const { addedSaleProduct, allSaleProducts, saleProductsById } = require('./mocks/saleProduct.controller.mocks');
 
 chai.use(sinonChai);
 
 describe('Testando SalesProducts - Controller', function () {
   
-  // describe('Listar todos produtos', function () {
-  //   beforeEach(function () {
-  //     sinon.stub(productService, 'getProducts').resolves({ type: null, message: allProducts });
-  //   });
-  //   afterEach(function () {
-  //     sinon.restore();
-  //   });
+  describe('Listar todos produtos', function () {
+    beforeEach(function () {
+      sinon.stub(saleProductService, 'getAllSales').resolves({ type: null, message: allSaleProducts });
+    });
+    afterEach(function () {
+      sinon.restore();
+    });
     
-  //   it('é chamado o status com o código 200', async function () {
-  //     // Arrange
-  //     const res = {};
-  //     const req = {};
+    it('é chamado o status com o código 200', async function () {
+      // Arrange
+      const res = {};
+      const req = {};
       
-  //     res.status = sinon.stub().returns(res);
-  //     res.json = sinon.stub().returns();
-  //     // Act
-  //     await productController.getProducts(req, res);
-  //     // Assert
-  //     expect(res.status).to.have.been.calledOnceWith(200);
-  //     expect(res.json).to.have.been.calledOnceWith(allProducts);
-  //   });
-  // });
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      // Act
+      await saleProductController.getAllSales(req, res);
+      // Assert
+      expect(res.status).to.have.been.calledOnceWith(200);
+      expect(res.json).to.have.been.calledOnceWith(allSaleProducts);
+    });
+  });
   
-  // describe('Busca por produto por id', function () {
+  describe('Busca por produto por id', function () {
 
-  //   afterEach(function () {
-  //     sinon.restore();
-  //   });
+    afterEach(function () {
+      sinon.restore();
+    });
 
-  //   it(' inválido é chamado o status com o código 422', async function () {
-  //     // Arrange
-  //     const res = {};
-  //     const req = {
-  //       params: { id: 'a' }
-  //     };
+    it('inexistente é chamado o status com o código 404', async function () {
+      // Arrange
+      const res = {};
+      const req = {
+        params: { id: 8 }
+      };
       
-  //     res.status = sinon.stub().returns(res);
-  //     res.json = sinon.stub().returns();
-  //     sinon.stub(productService, 'getProductById').resolves({ type: 'INVALID_VALUE', message: '"id" must be a number' });
-  //     // Act
-  //     await productController.getProductById(req, res);
-  //     // Assert
-  //     expect(res.status).to.have.been.calledOnceWith(422);
-  //     expect(res.json).to.have.been.calledOnceWith({ message: '"id" must be a number' });
-  //   });
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(saleProductService, 'getAllSalesbyId')
+        .resolves({ type: 'SALE_NOT_FOUND', message: 'Sale not found' });
+      // Act
+      await saleProductController.getAllSalesbyId(req, res);
+      // Assert
+      expect(res.status).to.have.been.calledOnceWith(404);
+      expect(res.json).to.have.been.calledOnceWith({ message: 'Sale not found' });
+    });
 
-  //   it('inexistente é chamado o status com o código 404', async function () {
-  //     // Arrange
-  //     const res = {};
-  //     const req = {
-  //       params: { id: 8 }
-  //     };
+    it('é chamado o status com o código 200', async function () {
+      // Arrange
+      const res = {};
+      const req = {
+        params: { id: 1 }
+      };
       
-  //     res.status = sinon.stub().returns(res);
-  //     res.json = sinon.stub().returns();
-  //     sinon.stub(productService, 'getProductById')
-  //       .resolves({ type: 'PRODUCT_NOT_FOUND', message: 'Product not found' });
-  //     // Act
-  //     await productController.getProductById(req, res);
-  //     // Assert
-  //     expect(res.status).to.have.been.calledOnceWith(404);
-  //     expect(res.json).to.have.been.calledOnceWith({ message: 'Product not found' });
-  //   });
-
-  //   it('é chamado o status com o código 200', async function () {
-  //     // Arrange
-  //     const res = {};
-  //     const req = {
-  //       params: { id: 1 }
-  //     };
-      
-  //     res.status = sinon.stub().returns(res);
-  //     res.json = sinon.stub().returns();
-  //     sinon.stub(productService, 'getProductById').resolves({ type: null, message: allProducts[0] });
-  //     // ActBusca por produto por id
-  //     await productController.getProductById(req, res);
-  //     // Assert
-  //     expect(res.status).to.have.been.calledOnceWith(200);
-  //     expect(res.json).to.have.been.calledOnceWith(allProducts[0]);
-  //   });
-  // });
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(saleProductService, 'getAllSalesbyId').resolves({ type: null, message: saleProductsById });
+      // ActBusca por produto por id
+      await saleProductController.getAllSalesbyId(req, res);
+      // Assert
+      expect(res.status).to.have.been.calledOnceWith(200);
+      expect(res.json).to.have.been.calledOnceWith(saleProductsById);
+    });
+  });
 
   describe('Cadastra nova venda', function () {
 

@@ -164,7 +164,7 @@ describe('Testando SalesProducts - Service', function () {
   //     // Arrange
   //     sinon.stub(saleProductModel, 'findById').resolves(undefined);
   //     // Act
-  //     const { type, message } = await productService.deleteProductById(4);
+  //     const { type, message } = await saleProductService.deleteSale(4);
   //     // Assert
   //     expect(type).to.be.equal('PRODUCT_NOT_FOUND');
   //     expect(message).to.be.deep.equal('Product not found');
@@ -173,7 +173,7 @@ describe('Testando SalesProducts - Service', function () {
   //   it('retorna erro com "id" inválido', async function () {
   //     // Arrange
   //     // Act
-  //     const { type, message } = await productService.deleteProductById('a');
+  //     const { type, message } = await saleProductService.deleteSale('a');
   //     // Assert
   //     expect(type).to.be.equal('INVALID_VALUE');
   //     expect(message).to.be.deep.equal('"id" must be a number');
@@ -184,26 +184,9 @@ describe('Testando SalesProducts - Service', function () {
   //     sinon.stub(saleProductModel, 'deleteById').resolves(1);
   //     sinon.stub(saleProductModel, 'findById').resolves(newProduct);
   //     // Act
-  //     const { type } = await productService.deleteProductById(30);
+  //     const { type } = await saleProductService.deleteSale(30);
   //     // Assert
   //     expect(type).to.be.equal(null);
-  //   });
-  // });
-
-  // describe('Buscar por produtos com', function () {
-    
-  //   afterEach(function () {
-  //     sinon.restore();
-  //   });
-    
-  //   it('com query vazia sucesso', async function () {
-  //     // Arrange
-  //     sinon.stub(saleProductModel, 'findByName').resolves(allProducts);
-  //     // Act
-  //     const { type, message } = await productService.searchByName('');
-  //     // Assert
-  //     expect(type).to.be.equal(null)
-  //     expect(message).to.be.deep.equal(allProducts)
   //   });
   // });
 
