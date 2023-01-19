@@ -21,4 +21,19 @@ describe('Teste da camada Sales - Model', function () {
       expect(result).to.equal(1);
     });
   });
+
+  describe('Deleta venda por "id"', function () {
+    afterEach(function () {
+      sinon.restore();
+    });
+
+    it('com successo', async function () {
+      // Arrange
+      sinon.stub(connection, 'execute').resolves([{ affectedRows: 1 }]);
+      // Act
+      const result = await saleModel.deleteFromSales(2);
+      // Assert
+      expect(result).to.be.equal(1);
+    });
+  });
 });

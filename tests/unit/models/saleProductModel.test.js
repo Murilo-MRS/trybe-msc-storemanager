@@ -70,18 +70,18 @@ describe('Teste da camada SaleProduct - Model', function () {
   //   });
   // })
 
-  // describe('Deleta venda por "id"', function () {
-  //   afterEach(function () {
-  //     sinon.restore();
-  //   });
+  describe.only('Deleta venda por "id"', function () {
+    afterEach(function () {
+      sinon.restore();
+    });
 
-  //   it('com successo', async function () {
-  //     // Arrange
-  //     sinon.stub(connection, 'execute').resolves([{ affectedRows: 1 }]);
-  //     // Act
-  //     const result = await saleProductModel.deleteById(2);
-  //     // Assert
-  //     expect(result).to.be.equal(1);
-  //   });
-  // });
+    it('com successo', async function () {
+      // Arrange
+      sinon.stub(connection, 'execute').resolves([{ affectedRows: 1 }]);
+      // Act
+      const result = await saleProductModel.deleteFromSalesProducts(2);
+      // Assert
+      expect(result).to.be.equal(1);
+    });
+  });
 });
