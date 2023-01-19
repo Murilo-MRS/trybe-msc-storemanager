@@ -5,15 +5,15 @@ const validateNewSaleProduct = require('../middlewares/validateNewSaleProduct');
 
 const router = express.Router();
 
-// router.get(
-//   '/',
-//   saleController.getSales,
-// );
+router.get(
+  '/',
+  saleProductController.getAllSales,
+);
 
-// router.get(
-//   '/:id',
-//   saleController.getSalesById,
-// );
+router.get(
+  '/:id',
+  saleProductController.getAllSalesbyId,
+);
 
 router.post(
   '/',
