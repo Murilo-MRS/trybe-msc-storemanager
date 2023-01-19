@@ -2,27 +2,27 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 const { saleProductModel } = require('../../../src/models');
 const connection  = require('../../../src/models/db/connection');
-const { saleProductsById, newSaleProduct } = require('./mocks/saleProduct.model.mock');
+const { saleProductsById, newSaleProduct, saleProducts } = require('./mocks/saleProduct.model.mock');
 
 describe('Teste da camada SaleProduct - Model', function () {
   
-  // describe('Listar todos os produtos', function () {
+  describe('Listar todas os vendas', function () {
     
-  //   afterEach(function () {
-  //     sinon.restore();
-  //   });
+    afterEach(function () {
+      sinon.restore();
+    });
 
-  //   it('Lista retorna com successo', async function () {
-  //     // Arrange
-  //     sinon.stub(connection, 'execute').resolves([allProducts]);
-  //     // Act
-  //     const result = await saleProductModel.findAll();
-  //     // Assert
-  //     expect(result).to.be.deep.equal(allProducts)
-  //   });
-  // });
+    it('Lista retorna com successo', async function () {
+      // Arrange
+      sinon.stub(connection, 'execute').resolves([saleProducts]);
+      // Act
+      const result = await saleProductModel.listSaleWithDate();
+      // Assert
+      expect(result).to.be.deep.equal(saleProducts)
+    });
+  });
   
-  describe('Lista produto por saleId', function () {
+  describe('Lista vendas por saleId', function () {
     
     afterEach(function () {
       sinon.restore();
@@ -32,7 +32,7 @@ describe('Teste da camada SaleProduct - Model', function () {
       // Arrange
       sinon.stub(connection, 'execute').resolves([saleProductsById]);
       // Act
-      const result = await saleProductModel.findAllById(1);
+      const result = await saleProductModel.listSaleWithDateById(1);
       // Assert
       expect(result).to.be.deep.equal(saleProductsById);
     });
@@ -82,22 +82,6 @@ describe('Teste da camada SaleProduct - Model', function () {
   //     const result = await saleProductModel.deleteById(2);
   //     // Assert
   //     expect(result).to.be.equal(1);
-  //   });
-  // });
-
-  // describe('Buscar pelo Product "name"', function () {
-    
-  //   afterEach(function () {
-  //     sinon.restore();
-  //   });
-
-  //   it('retorna com successo', async function () {
-  //     // Arrange
-  //     sinon.stub(connection, 'execute').resolves([allProducts]);
-  //     // Act
-  //     const result = await saleProductModel.findByName('');
-  //     // Assert
-  //     expect(result).to.be.deep.equal(allProducts);
   //   });
   // });
 });
