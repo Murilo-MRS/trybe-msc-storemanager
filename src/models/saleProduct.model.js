@@ -22,15 +22,6 @@ const listSaleWithDateById = async (saleId) => {
   return camelize(result);
 };
 
-// const findAllById = async (saleId) => {
-//   const [result] = await connection.execute(
-//     'SELECT product_id, quantity FROM StoreManager.sales_products WHERE sale_id = ?',
-//     [saleId],
-//   );
-  
-//   return result;
-// };
-
 const addNewProductSale = async ({ saleId, productId, quantity }) => {
   const [{ insertId }] = await connection.execute(
     'INSERT INTO StoreManager.sales_products (sale_id, product_id, quantity) VALUES (?, ?, ?)',
@@ -40,16 +31,14 @@ const addNewProductSale = async ({ saleId, productId, quantity }) => {
   return insertId;
 };
 
-// const updateById = async (productId, dataToUpdate) => {
-//   const formattedColumns = Object.keys(dataToUpdate)
-//     .map((key) => `${key} = ?`)
-//     .join(', ');
-
-//   return connection.execute(
-//     `UPDATE products SET ${formattedColumns} WHERE id = ?`,
-//     [...Object.values(dataToUpdate), productId],
-//   );
-// };
+const updateSale = async (saleId, { productId, quantity }) => {
+  const sql = 'product_id = ?, quantity = ?';
+  const [{ affectedRows }] = await connection.execute(
+    `UPDATE StoreManager.sales_products SET ${sql} WHERE sale_id = ? AND product_id = ?`,
+    [productId, quantity, saleId, productId],
+  );
+  return affectedRows;
+};
 
 const deleteFromSalesProducts = async (saleId) => {
   const [{ affectedRows }] = await connection.execute(
@@ -65,4 +54,5 @@ module.exports = {
   listSaleWithDate,
   listSaleWithDateById,
   deleteFromSalesProducts,
+  updateSale,
 };

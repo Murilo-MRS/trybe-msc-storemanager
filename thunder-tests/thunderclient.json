@@ -179,16 +179,16 @@
     "colId": "b81f9898-f2e1-4630-b6fd-f693a354e7bf",
     "containerId": "2cdd5a0d-c3b7-441e-942d-a6b6ec959bac",
     "name": "Atualiza venda",
-    "url": "http://localhost:3000/sales",
+    "url": "http://localhost:3000/sales/3",
     "method": "PUT",
     "sortNum": 65625,
     "created": "2023-01-18T18:38:22.162Z",
-    "modified": "2023-01-18T18:38:53.326Z",
+    "modified": "2023-01-19T23:19:06.639Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"productId\": 3,\n  \"quantity\": 2\n}",
+      "raw": "[\n  {\n    \"productId\": 1,\n    \"quantity\": 6\n  },\n  {\n    \"productId\": 2,\n    \"quantity\": 60\n  }\n]",
       "form": []
     },
     "tests": []
