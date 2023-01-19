@@ -25,6 +25,20 @@ const addSaleProduct = async (salesProductsList) => {
   return { type: null, message: addedSale };
 };
 
+const getAllSales = async () => {
+  const allSales = await saleProductModel.listSaleWithDate();
+  return { type: null, message: allSales };
+}; 
+
+const getAllSalesbyId = async (saleId) => {
+  const sale = await saleProductModel.listSaleWithDateById(saleId);
+  if (sale.length === 0) return { type: 'SALE_NOT_FOUND', message: 'Sale not found' };
+
+  return { type: null, message: sale };
+}; 
+
 module.exports = {
   addSaleProduct,
+  getAllSales,
+  getAllSalesbyId,
 };
