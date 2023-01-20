@@ -96,63 +96,87 @@ describe('Testando SalesProducts - Service', function () {
     });
   });
 
-  // describe('Atualizar produto', function () {
+  describe('Atualizar produto', function () {
             
-  //   afterEach(function () {
-  //     sinon.restore();
-  //   });
+    afterEach(function () {
+      sinon.restore();
+    });
 
-  //   it('retorna erro com id inválido', async function () {
-  //     // Arrange
-  //     // Act
-  //     const { type, message } = await productService.updateProductbyId('a', { name:  'Teste' });
-  //     // Assert
-  //     expect(type).to.be.equal('INVALID_VALUE');
-  //     expect(message).to.be.deep.equal('"id" must be a number');
-  //   });
+    it('retorna erro com campo "quantity" inválido', async function () {
+      // Arrange
+      sinon.stub(saleProductModel, 'listSaleWithDateById')
+        .resolves(saleProductsById);
+      // Act
+      const { type, message } = await saleProductService.updateSale(3, [{ productId: 1, quantity: -3}]);
+      // Assert
+      expect(type).to.be.equal('INVALID_VALUE');
+      expect(message).to.be.deep.equal('"quantity" must be greater than or equal to 1');
+    });
 
-  //   it('retorna erro com id de produto inexistente', async function () {
-  //     // Arrange
-  //     sinon.stub(saleProductModel, 'findById').resolves(undefined);
-  //     // Act
-  //     const { type, message } = await productService.updateProductbyId(3, { name:  'Teste' });
-  //     // Assert
-  //     expect(type).to.be.equal('PRODUCT_NOT_FOUND');
-  //     expect(message).to.be.deep.equal('Product not found');
-  //   });
+    it('retorna erro com id de produto inexistente', async function () {
+      // Arrange
+      sinon.stub(saleProductModel, 'listSaleWithDateById').resolves([]);
+      // Act
+      const { type, message } = await saleProductService.updateSale(3, [{ productId: 1, quantity: 3}]);
+      // Assert
+      expect(type).to.be.equal('SALE_NOT_FOUND');
+      expect(message).to.be.deep.equal('Sale not found');
+    });
 
-  //   it('retorna erro com "name" inválido', async function () {
-  //     // Arrange
-  //     const prodcutId = 3
-  //     const product = { id: prodcutId, name: 'Teste 123' };
-  //     const invalidNameUpdate =  "Test";
+    // it('retorna erro com "quantity" inválido', async function () {
+    //   // Arrange
+    //   const prodcutId = 3
+    //   const product = { id: prodcutId, name: 'Teste 123' };
+    //   const invalidNameUpdate =  "Test";
 
-  //     sinon.stub(saleProductModel, 'findById').resolves(product);
-  //     // Act
-  //     const { type, message } = await productService.updateProductbyId(3, invalidNameUpdate);
-  //     // Assert
-  //     expect(type).to.be.equal('INVALID_VALUE');
-  //     expect(message).to.be.deep.equal('"name" length must be at least 5 characters long');
-  //   });
+    //   sinon.stub(saleProductModel, 'findById').resolves(product);
+    //   // Act
+    //   const { type, message } = await saleProductService.updateSale(3, invalidNameUpdate);
+    //   // Assert
+    //   expect(type).to.be.equal('INVALID_VALUE');
+    //   expect(message).to.be.deep.equal('"name" length must be at least 5 characters long');
+    // });
       
-  //   it('com valores válidos', async function () {
-  //     // Arrange
-  //     const prodcutId = 3
-  //     const product = { id: prodcutId, name: 'Teste' };
-  //     const validNameUpdate = 'Atualizado';
-  //     const productUpdated = {id: 3, name: validNameUpdate};
+    it('com valores válidos', async function () {
+      // Arrange
+      // const prodcutId = 3
+      const saleToUpdate = [
+        {
+          "productId": 1,
+          "quantity": 10
+        },
+        {
+          "productId": 2,
+          "quantity": 50
+        }
+      ];
+      // const validNameUpdate = 'Atualizado';
+      const saleUpdated = {
+        "saleId": 1,
+        "itemsUpdated": [
+          {
+            "productId": 1,
+            "quantity":10
+          },
+          {
+            "productId": 2,
+            "quantity":50
+          }
+        ]
+      };
 
-  //     sinon.stub(saleProductModel, 'findById')
-  //       .onFirstCall().resolves(product)
-  //       .onSecondCall().resolves(productUpdated);
-  //     sinon.stub(saleProductModel, 'updateById').resolves(true);
-  //     // Act
-  //     const { type, message } = await productService.updateProductbyId(3, validNameUpdate);
-  //     // Assert
-  //     expect(type).to.be.equal(null);
-  //     expect(message).to.be.deep.equal(productUpdated);
-  //   });
-  // });
+      sinon.stub(saleProductModel, 'listSaleWithDateById')
+        .resolves(saleProductsById);
+      sinon.stub(saleProductModel, 'updateSale')
+        .onFirstCall().resolves(1)
+        .onSecondCall().resolves(1);
+      // Act
+      const { type, message } = await saleProductService.updateSale(1, saleToUpdate);
+      // Assert
+      expect(type).to.be.equal(null);
+      expect(message).to.be.deep.equal(saleUpdated);
+    });
+  });
  
   describe('Deletar produto', function () {
             
