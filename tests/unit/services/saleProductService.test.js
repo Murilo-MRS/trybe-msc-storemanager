@@ -123,20 +123,6 @@ describe('Testando SalesProducts - Service', function () {
       expect(message).to.be.deep.equal('Sale not found');
     });
 
-    // it('retorna erro com "quantity" inválido', async function () {
-    //   // Arrange
-    //   const prodcutId = 3
-    //   const product = { id: prodcutId, name: 'Teste 123' };
-    //   const invalidNameUpdate =  "Test";
-
-    //   sinon.stub(saleProductModel, 'findById').resolves(product);
-    //   // Act
-    //   const { type, message } = await saleProductService.updateSale(3, invalidNameUpdate);
-    //   // Assert
-    //   expect(type).to.be.equal('INVALID_VALUE');
-    //   expect(message).to.be.deep.equal('"name" length must be at least 5 characters long');
-    // });
-      
     it('com valores válidos', async function () {
       // Arrange
       // const prodcutId = 3

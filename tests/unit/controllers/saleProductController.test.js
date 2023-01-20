@@ -5,6 +5,7 @@ const sinonChai = require('sinon-chai');
 const { saleProductController } = require('../../../src/controllers');
 const validateNewSaleProduct = require('../../../src/middlewares/validateNewSaleProduct');
 const { saleProductService } = require('../../../src/services');
+const { saleToUpdate, saleUpdated } = require('./mocks/product.controller.mock');
 const { addedSaleProduct, allSaleProducts, saleProductsById } = require('./mocks/saleProduct.controller.mocks');
 
 chai.use(sinonChai);
@@ -158,87 +159,70 @@ describe('Testando SalesProducts - Controller', function () {
     });
   });
 
-  // describe('Atualiza produto', function () {
+  describe('Atualiza produto', function () {
 
-  //   afterEach(function () {
-  //     sinon.restore();
-  //   });
+    afterEach(function () {
+      sinon.restore();
+    });
 
-  //   it(' inválido é chamado o status com o código 422', async function () {
-  //     // Arrange
-  //     const res = {};
-  //     const req = {
-  //       body: { name: 'a' },
-  //       params: { id: 1 },
-  //     };
+    it(' inválido é chamado o status com o código 422', async function () {
+      // Arrange
+      const res = {};
+      const req = {
+        body: [{ productId: 1, quantity: -3}],
+        params: { id: 1 },
+      };
       
-  //     res.status = sinon.stub().returns(res);
-  //     res.json = sinon.stub().returns();
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
       
-  //     sinon.stub(productService, 'updateProductbyId')
-  //       .resolves({ type: 'INVALID_VALUE', message: '"name" length must be at least 5 characters long' });
-  //     // Act
-  //     await productController.updateProductbyId(req, res);
-  //     // Assert
-  //     expect(res.status).to.have.been.calledOnceWith(422);
-  //     expect(res.json).to.have.been.calledOnceWith({ message: '"name" length must be at least 5 characters long' });
-  //   });
+      sinon.stub(saleProductService, 'updateSale')
+        .resolves({ type: 'INVALID_VALUE', message: '"quantity" must be greater than or equal to 1' });
+      // Act
+      await saleProductController.updateSale(req, res);
+      // Assert
+      expect(res.status).to.have.been.calledOnceWith(422);
+      expect(res.json).to.have.been.calledOnceWith({ message: '"quantity" must be greater than or equal to 1' });
+    });
 
-  //   it('com a propriedade "name "inexistente é chamado o status com o código 400', async function () {
-  //     // Arrange
-  //     const res = {};
-  //     const req = {
-  //       body: { id: 8 }
-  //     };
+    it('com "sale_id" inexistente é chamado o status com o código 404', async function () {
+      // Arrange
+      const res = {};
+      const req = {
+        params: { id: 2 },
+        body: [{ productId: 1, quantity: 3}],
+      };
       
-  //     res.status = sinon.stub().returns(res);
-  //     res.json = sinon.stub().returns();
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
       
-  //     // Act
-  //     await validateNewProduct(req, res);
-  //     // Assert
-  //     expect(res.status).to.have.been.calledOnceWith(400);
-  //     expect(res.json).to.have.been.calledOnceWith({ message: '"name" is required' });
-  //   });
+      sinon.stub(saleProductService, 'updateSale')
+        .resolves({ type: 'SALE_NOT_FOUND', message: 'Sale not found' });
+      // Act
+      await saleProductController.updateSale(req, res);
+      // Assert
+      expect(res.status).to.have.been.calledOnceWith(404);
+      expect(res.json).to.have.been.calledOnceWith({ message: 'Sale not found' });
+    });
 
-  //   it('com "id" inexistente é chamado o status com o código 404', async function () {
-  //     // Arrange
-  //     const res = {};
-  //     const req = {
-  //       params: { id: 3 },
-  //       body: { name: "Atualizado" },
-  //     };
+    it('é chamado o status com o código 200', async function () {
+      // Arrange
+      const res = {};
+      const req = {
+        body: saleToUpdate,
+        params: { id: 1 },
+      };
       
-  //     res.status = sinon.stub().returns(res);
-  //     res.json = sinon.stub().returns();
-      
-  //     sinon.stub(productService, 'updateProductbyId')
-  //       .resolves({ type: 'PRODUCT_NOT_FOUND', message: 'Product not found' });
-  //     // Act
-  //     await productController.updateProductbyId(req, res);
-  //     // Assert
-  //     expect(res.status).to.have.been.calledOnceWith(404);
-  //     expect(res.json).to.have.been.calledOnceWith({ message: 'Product not found' });
-  //   });
-
-  //   it('é chamado o status com o código 200', async function () {
-  //     // Arrange
-  //     const res = {};
-  //     const req = {
-  //       body: { name: "Atualizado" },
-  //       params: { id: 1 },
-  //     };
-      
-  //     res.status = sinon.stub().returns(res);
-  //     res.json = sinon.stub().returns();
-  //     sinon.stub(productService, 'updateProductbyId').resolves({ type: null, message: updatedProduct });
-  //     // Act
-  //     await productController.updateProductbyId(req, res);
-  //     // Assert
-  //     expect(res.status).to.have.been.calledOnceWith(200);
-  //     expect(res.json).to.have.been.calledOnceWith(updatedProduct);
-  //   });
-  // });
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      sinon.stub(saleProductService, 'updateSale').resolves({ type: null, message: saleUpdated });
+      // Act
+      await saleProductController.updateSale(req, res);
+      // Assert
+      expect(res.status).to.have.been.calledOnceWith(200);
+      expect(res.json).to.have.been.calledOnceWith(saleUpdated);
+    });
+  });
 
   describe('Deletar produto por id', function () {
 
