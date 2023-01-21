@@ -2,8 +2,8 @@ const camelize = require('camelize');
 const connection = require('./db/connection');
 
 const listSaleWithDate = async () => {
-  const columns = 'sf.sale_id, s.date, sf.product_id, sf.quantity';
-  const join = 'sales_products sf INNER JOIN sales s ON s.id = sf.sale_id';
+  const columns = 'a.sale_id, s.date, a.product_id, a.quantity';
+  const join = 'StoreManager.sales_products a INNER JOIN StoreManager.sales s ON s.id = a.sale_id';
 
   const [result] = await connection.execute(
     `SELECT ${columns} FROM ${join}`,
@@ -12,8 +12,8 @@ const listSaleWithDate = async () => {
   };
   
 const listSaleWithDateById = async (saleId) => {
-  const columns = 's.date, sf.product_id, sf.quantity';
-  const join = 'sales_products sf INNER JOIN sales s ON s.id = sf.sale_id';
+  const columns = 's.date, a.product_id, a.quantity';
+  const join = 'StoreManager.sales_products a INNER JOIN StoreManager.sales s ON s.id = a.sale_id';
 
   const [result] = await connection.execute(
     `SELECT ${columns} FROM ${join} WHERE sale_id = ?`,
@@ -42,7 +42,7 @@ const updateSale = async (saleId, { productId, quantity }) => {
 
 const deleteFromSalesProducts = async (saleId) => {
   const [{ affectedRows }] = await connection.execute(
-    'DELETE FROM sales_products WHERE sale_id = ?',
+    'DELETE FROM StoreManager.sales_products WHERE sale_id = ?',
     [saleId],
   );
   return affectedRows;

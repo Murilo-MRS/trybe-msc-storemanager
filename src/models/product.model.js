@@ -2,14 +2,14 @@ const connection = require('./db/connection');
 
 const findAll = async () => {
   const [result] = await connection.execute(
-    'SELECT * FROM products',
+    'SELECT * FROM StoreManager.products',
   );
   return result;
 };
 
 const findById = async (productId) => {
   const [[result]] = await connection.execute(
-    'SELECT * FROM products WHERE id = ?',
+    'SELECT * FROM StoreManager.products WHERE id = ?',
     [productId],
   );
   
@@ -24,7 +24,7 @@ const insert = async (product) => {
     .join(', ');
   
   const [{ insertId }] = await connection.execute(
-    `INSERT INTO products (${columns}) VALUES (${placeholders})`,
+    `INSERT INTO StoreManager.products (${columns}) VALUES (${placeholders})`,
     [...Object.values(product)],
   );
 
@@ -37,14 +37,14 @@ const updateById = async (productId, dataToUpdate) => {
     .join(', ');
 
   return connection.execute(
-    `UPDATE products SET ${formattedColumns} WHERE id = ?`,
+    `UPDATE StoreManager.products SET ${formattedColumns} WHERE id = ?`,
     [...Object.values(dataToUpdate), productId],
   );
 };
 
 const deleteById = async (productId) => {
   const [{ affectedRows }] = await connection.execute(
-    'DELETE FROM products WHERE id = ?',
+    'DELETE FROM StoreManager.products WHERE id = ?',
     [productId],
   );
   return affectedRows;
@@ -52,7 +52,7 @@ const deleteById = async (productId) => {
 
 const findByName = async (name) => {
   const [result] = await connection.execute(
-    `SELECT * FROM products WHERE name LIKE '%${name}%'`,
+    `SELECT * FROM StoreManager.products WHERE name LIKE '%${name}%'`,
   );
   
   return result; 

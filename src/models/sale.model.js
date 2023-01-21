@@ -2,7 +2,7 @@ const connection = require('./db/connection');
 
 const addNewSale = async () => {
   const [{ insertId }] = await connection.execute(
-    'INSERT INTO sales (date) VALUES (now())',
+    'INSERT INTO StoreManager.sales (date) VALUES (now())',
   );
 
   return insertId;
@@ -10,7 +10,7 @@ const addNewSale = async () => {
 
 const deleteFromSales = async (saleId) => {
   const [{ affectedRows }] = await connection.execute(
-    'DELETE FROM sales WHERE id = ?',
+    'DELETE FROM StoreManager.sales WHERE id = ?',
     [saleId],
   );
   return affectedRows;
