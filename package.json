@@ -13,8 +13,8 @@
     "start": "node src/server.js",
     "debug": "nodemon --ignore coverage --inspect=0.0.0.0:9229 src/server.js",
     "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json . --ext .js, .jsx",
-    "migration": "node -e \"require('./__tests__/_utils').runMigration()\"",
-    "seed": "node -e \"require('./__tests__/_utils').runSeed()\""
+    "migration": "node -e \"require('./src/utils/dbScripts.js').runMigration()\"",
+    "seed": "node -e \"require('./src/utils/dbScripts.js').runSeed()\""
   },
   "repository": {
     "type": "git",
